@@ -1,0 +1,66 @@
+{
+  "context": "Tests whether the agent handles 12+ files across 4 areas by creating multiple logically grouped commits, correctly prioritizes feature groups before infra before docs, uses correct type prefixes per group, and keeps commit messages concise without listing individual files.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Multiple commits created",
+      "description": "commit-log.txt shows at least 3 commits beyond the initial commit (changes are NOT collapsed into a single mixed commit)",
+      "max_score": 10
+    },
+    {
+      "name": "Notifications grouped together",
+      "description": "commit-plan.md or commit-log.txt shows all notifications files (service.js, mailer.js, templates/, tests/notifications/) in a single commit",
+      "max_score": 10
+    },
+    {
+      "name": "Reporting grouped together",
+      "description": "commit-plan.md or commit-log.txt shows all reporting files (builder.js, formatter.js, routes.js, tests/reporting/) in a single commit",
+      "max_score": 10
+    },
+    {
+      "name": "Infra grouped separately",
+      "description": "The shared infra files (logger.js, db-pool.js) are committed separately from the feature files",
+      "max_score": 8
+    },
+    {
+      "name": "Docs type used for documentation",
+      "description": "The commit(s) containing docs/ files use the `docs` type prefix",
+      "max_score": 8
+    },
+    {
+      "name": "Feat type for features",
+      "description": "The notifications and reporting commits use the `feat` type prefix",
+      "max_score": 8
+    },
+    {
+      "name": "Chore or feat type for infra",
+      "description": "The infra commit uses `chore` or `feat` type prefix (not `docs` or `fix`)",
+      "max_score": 8
+    },
+    {
+      "name": "Plan before committing",
+      "description": "commit-plan.md exists and lists proposed groups and messages (evidence that grouping was planned before staging)",
+      "max_score": 10
+    },
+    {
+      "name": "No file listing in messages",
+      "description": "No commit message enumerates individual file names (e.g., does NOT list service.js, mailer.js, builder.js, etc.)",
+      "max_score": 8
+    },
+    {
+      "name": "Concise descriptions",
+      "description": "Each commit description summarizes intent in a few words (e.g., 'add notification service') rather than describing implementation details",
+      "max_score": 8
+    },
+    {
+      "name": "Line length ≤ 72 chars",
+      "description": "All commit message lines visible in commit-log.txt are ≤ 72 characters",
+      "max_score": 6
+    },
+    {
+      "name": "Action verb in each message",
+      "description": "Each commit message description starts with an action verb (add, introduce, update, extract, or similar)",
+      "max_score": 6
+    }
+  ]
+}

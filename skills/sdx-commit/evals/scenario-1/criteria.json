@@ -1,0 +1,66 @@
+{
+  "context": "Tests whether the agent uses openspec/changes/* directory names as commit scopes, correctly groups feature files (spec + implementation) together per feature, and makes one commit per feature rather than one mixed commit.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "customer-import scope used",
+      "description": "One commit message contains the scope `customer-import` (i.e., the message matches the pattern `*(customer-import)*`)",
+      "max_score": 14
+    },
+    {
+      "name": "audit-log scope used",
+      "description": "One commit message contains the scope `audit-log` (i.e., the message matches the pattern `*(audit-log)*`)",
+      "max_score": 12
+    },
+    {
+      "name": "Two separate feature commits",
+      "description": "commit-log.txt shows at least 2 commits beyond the initial commit — one per feature, not a single combined commit",
+      "max_score": 10
+    },
+    {
+      "name": "customer-import spec grouped with impl",
+      "description": "The openspec/changes/customer-import/spec.md file is in the same commit as the customer-import implementation files (not committed separately or left out)",
+      "max_score": 8
+    },
+    {
+      "name": "audit-log spec grouped with impl",
+      "description": "The openspec/changes/audit-log/spec.md file is in the same commit as the audit-log implementation files (not committed separately or left out)",
+      "max_score": 6
+    },
+    {
+      "name": "Conventional commit type: feat",
+      "description": "Both feature commits use the `feat` type prefix",
+      "max_score": 8
+    },
+    {
+      "name": "Correct conventional format",
+      "description": "Both commit messages match the pattern `<type>(<scope>): <description>` on the first line",
+      "max_score": 8
+    },
+    {
+      "name": "Action verb in description",
+      "description": "Each commit message description starts with an action verb (add, implement, introduce, or similar)",
+      "max_score": 8
+    },
+    {
+      "name": "Line length ≤ 72 chars",
+      "description": "All commit message lines in commit-log.txt are ≤ 72 characters",
+      "max_score": 8
+    },
+    {
+      "name": "No file listing in messages",
+      "description": "Commit messages do not enumerate individual file names such as csv.js, logger.js, spec.md, etc.",
+      "max_score": 6
+    },
+    {
+      "name": "git log captured",
+      "description": "commit-log.txt exists and contains git log --oneline output showing recent commits",
+      "max_score": 6
+    },
+    {
+      "name": "Feature commits ordered before any others",
+      "description": "If there are additional commits (e.g., for shared infra), the two feature commits appear before them in the log (features committed first per grouping priority)",
+      "max_score": 6
+    }
+  ]
+}

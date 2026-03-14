@@ -1,0 +1,148 @@
+{
+  "instructions": [
+    {
+      "instruction": "Run `git status --porcelain` first; if no changes exist, tell the user 'Nothing to commit' and stop",
+      "original_snippets": "git status --porcelain\n\nIf there are no changes, tell the user \"Nothing to commit\" and stop.",
+      "relevant_when": "At the start of any commit workflow",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "Collect changed paths using `git status --porcelain`, `git diff --name-only`, and `git diff --cached --name-only` before staging anything",
+      "original_snippets": "Collect changed paths (modified, staged, untracked) and inspect them:\n\ngit status --porcelain\ngit diff --name-only\ngit diff --cached --name-only\n\nBuild **file groups** before staging anything.",
+      "relevant_when": "Before any staging or grouping decisions",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Build file groups BEFORE staging anything",
+      "original_snippets": "Build **file groups** before staging anything.",
+      "relevant_when": "Any time there are changes to commit",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Use grouping priority order: Feature/change groups first, then shared infra/support groups, then skill/docs groups",
+      "original_snippets": "**Grouping priority (in order):**\n- **Feature/change groups**: files under `openspec/changes/<change-name>/` and related code/docs that clearly implement that same feature\n- **Shared infra/support groups**: cross-cutting files (build/config/tooling/logging helpers) that don't belong cleanly to one feature\n- **Skill/docs groups**: skill files, agent config, docs-only updates",
+      "relevant_when": "When organizing files into commit groups with mixed types",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Feature groups should include files under `openspec/changes/<change-name>/` AND related code/docs that clearly implement that same feature",
+      "original_snippets": "**Feature/change groups**: files under `openspec/changes/<change-name>/` and related code/docs that clearly implement that same feature",
+      "relevant_when": "When a project has an openspec/changes directory structure",
+      "why_given": "new knowledge"
+    },
+    {
+      "instruction": "Prefer one commit per change group; if there is only one clear group, use one commit",
+      "original_snippets": "Prefer **one commit per change group**. If there is only one clear group, use one commit.",
+      "relevant_when": "When deciding how many commits to make",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "If a single file contains unrelated edits for multiple groups and cannot be split at file-level, ask the user before proceeding (or keep it in one group and explain the tradeoff)",
+      "original_snippets": "**Important:** If a single file contains unrelated edits for multiple groups and cannot be split cleanly at file-level, ask the user before proceeding (or keep it in one group and explain the tradeoff).",
+      "relevant_when": "When a file's changes span multiple logical groups",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "For each group, draft a commit plan listing files, summarizing intent, and drafting a conventional commit message",
+      "original_snippets": "For each group:\n- list files in the group\n- summarize intent\n- draft a conventional commit message using the format below",
+      "relevant_when": "Before committing any group",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Present the plan and ask for confirmation before staging/committing",
+      "original_snippets": "Present the plan and ask for confirmation before staging/committing.",
+      "relevant_when": "After drafting commit plan, before any git staging",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Stage only that group's files using `git add -- <file1> <file2> ...` (explicit file list, not git add -A)",
+      "original_snippets": "Stage only that group's files\ngit add -- <file1> <file2> ...",
+      "relevant_when": "When staging files for a specific commit group",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Review staged summary using `git diff --cached --stat` and `git diff --cached --name-only` before committing each group",
+      "original_snippets": "Review the staged summary\ngit diff --cached --stat\ngit diff --cached --name-only",
+      "relevant_when": "After staging a group, before committing it",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "For multi-line commit messages, use multiple `-m` flags (e.g., `git commit -m \"line1\" -m \"line2\"`)",
+      "original_snippets": "For multi-line messages, use multiple `-m` flags.",
+      "relevant_when": "When a commit message spans multiple lines",
+      "why_given": "new knowledge"
+    },
+    {
+      "instruction": "After all commits, confirm by showing recent commits using `git log --oneline -<N>`",
+      "original_snippets": "Show recent commits created in this run:\ngit log --oneline -<N>\n\nConfirm each planned group was committed.",
+      "relevant_when": "After completing all commits in a run",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Use scope = logical area affected, with short names like: connector, db, api, engine, frontend, docs, config, infra",
+      "original_snippets": "**scope** = the logical area affected. Use short names like: `connector`, `db`, `api`, `engine`, `frontend`, `docs`, `config`, `infra`.",
+      "relevant_when": "When writing commit message scopes without a matching openspec feature",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "If a change maps to a known feature in openspec/changes/*, use that feature name as the commit scope",
+      "original_snippets": "If a change maps to a known feature (check `openspec/changes/*/`), use that feature name as the scope. For example: `feat(mvp-full-sync): add Klaviyo connector`.",
+      "relevant_when": "When the project has openspec/changes/* directories",
+      "why_given": "new knowledge"
+    },
+    {
+      "instruction": "Each commit message line should be ≤ 72 characters",
+      "original_snippets": "Each line should be ≤ 72 characters.",
+      "relevant_when": "When writing any commit message",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "Use `feat` for new features, `fix` for bug fixes, `refactor` for restructuring, `docs` for documentation, `chore` for config/build changes",
+      "original_snippets": "Use `feat` for new features, `fix` for bug fixes, `refactor` for restructuring, `docs` for documentation, `chore` for config/build changes.",
+      "relevant_when": "When choosing the conventional commit type prefix",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "If all changes are part of one logical unit, a single commit message line is fine",
+      "original_snippets": "If all changes are part of one logical unit, a single line is fine.",
+      "relevant_when": "When deciding whether to write a single-line or multi-line commit message",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Be concise — each commit message should tell the reader what changed, not how",
+      "original_snippets": "Be **concise**. Each line should tell the reader _what_ changed, not _how_.",
+      "relevant_when": "When writing any commit message",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "Prefer action verbs in commit descriptions: add, fix, remove, update, refactor, extract",
+      "original_snippets": "Prefer **action verbs**: add, fix, remove, update, refactor, extract.",
+      "relevant_when": "When writing the description part of a commit message",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "Don't list every file in commit messages — summarize by intent",
+      "original_snippets": "Don't list every file in commit messages — summarize by intent.",
+      "relevant_when": "When writing any commit message with multiple changed files",
+      "why_given": "reminder"
+    },
+    {
+      "instruction": "If there are 10+ files changed across 3+ areas, still aim for ≤ 5 commit message lines total",
+      "original_snippets": "If there are 10+ files changed across 3+ areas, still aim for ≤ 5 commit message lines.",
+      "relevant_when": "When there are many files changed across multiple areas",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Prefer multiple small commits over one mixed commit when changes map to different features",
+      "original_snippets": "Prefer multiple small commits over one mixed commit when changes map to different features.",
+      "relevant_when": "When deciding whether to make one or multiple commits for mixed changes",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Group by change first, then by layer (api/frontend/docs) within that change",
+      "original_snippets": "Group by **change first**, then by layer (api/frontend/docs) within that change.",
+      "relevant_when": "When organizing files that span multiple layers of the same logical change",
+      "why_given": "preference"
+    }
+  ]
+}

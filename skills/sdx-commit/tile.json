@@ -1,0 +1,11 @@
+{
+  "name": "spec-driven-magic/sdx-commit",
+  "version": "0.1.1",
+  "summary": "Analyzes git changes, groups them by logical change or OpenSpec feature, and creates conventional commits for each group.",
+  "private": false,
+  "skills": {
+    "sdx-commit": {
+      "path": "skills/sdx-commit/SKILL.md"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "context": "Tests whether the agent follows the correct workflow sequence — checking status and building groups before staging, staging per group with explicit file lists, reviewing staged diff before each commit, and running git log at the end — with evidence captured in process-log.md.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Status check logged",
+      "description": "process-log.md records a `git status` or `git status --porcelain` command being run (evidence of the initial status check step)",
+      "max_score": 8
+    },
+    {
+      "name": "Diff analysis before staging",
+      "description": "process-log.md records `git diff --name-only` or `git diff` being run before any `git add` command appears",
+      "max_score": 10
+    },
+    {
+      "name": "Staged diff reviewed",
+      "description": "process-log.md records `git diff --cached --stat` or `git diff --cached --name-only` being run after staging but before committing (at least once)",
+      "max_score": 10
+    },
+    {
+      "name": "Explicit file list in git add",
+      "description": "process-log.md shows `git add` commands that list explicit file paths (e.g., `git add -- src/db/connection.js`), NOT `git add -A` or `git add .`",
+      "max_score": 12
+    },
+    {
+      "name": "Two separate commits",
+      "description": "commit-log.txt shows exactly 2 new commits beyond the initial commit — one for the db refactor and one for docs",
+      "max_score": 10
+    },
+    {
+      "name": "Refactor type for db changes",
+      "description": "The commit for the database pooling changes uses the `refactor` type prefix",
+      "max_score": 10
+    },
+    {
+      "name": "Docs type for contributing guide",
+      "description": "The commit for CONTRIBUTING.md uses the `docs` type prefix",
+      "max_score": 10
+    },
+    {
+      "name": "git log run at end",
+      "description": "process-log.md records a `git log --oneline` command being run after all commits are made, AND commit-log.txt contains git log output",
+      "max_score": 8
+    },
+    {
+      "name": "Action verb in descriptions",
+      "description": "Both commit message descriptions start with an action verb (refactor, switch, update, migrate, or similar)",
+      "max_score": 8
+    },
+    {
+      "name": "Line length ≤ 72 chars",
+      "description": "All commit message lines are ≤ 72 characters",
+      "max_score": 8
+    },
+    {
+      "name": "No file listing in messages",
+      "description": "Neither commit message lists individual file names (connection.js, queries.js, runner.js, CONTRIBUTING.md)",
+      "max_score": 6
+    }
+  ]
+}

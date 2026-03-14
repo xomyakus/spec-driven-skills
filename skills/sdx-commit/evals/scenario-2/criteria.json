@@ -1,0 +1,61 @@
+{
+  "context": "Tests whether the agent correctly treats all files as a single logical unit (producing one commit), writes a conventional commit message with proper type, scope, action verb, concise description, and ≤72 character lines — without listing individual file names.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Single commit for one logical unit",
+      "description": "commit-log.txt shows exactly one new commit beyond the initial commit (all three files committed together, not split across multiple commits)",
+      "max_score": 14
+    },
+    {
+      "name": "Conventional commit type: feat",
+      "description": "The commit message uses the `feat` type prefix",
+      "max_score": 10
+    },
+    {
+      "name": "Scope present and short",
+      "description": "The commit message includes a scope in parentheses that is a short logical area name (e.g., `users`, `user-management`, `dashboard`) — not a file path",
+      "max_score": 10
+    },
+    {
+      "name": "Action verb starts description",
+      "description": "The commit description (after the colon) starts with an action verb such as add, implement, introduce, create, or similar",
+      "max_score": 10
+    },
+    {
+      "name": "No file names in message",
+      "description": "The commit message does NOT mention individual file names such as users_migration.sql, users.js, or UserList.tsx",
+      "max_score": 10
+    },
+    {
+      "name": "Describes intent, not implementation",
+      "description": "The commit message describes what the change achieves (e.g., 'add user management') rather than how it is implemented (e.g., 'create SQL migration and React component')",
+      "max_score": 10
+    },
+    {
+      "name": "Line length ≤ 72 chars",
+      "description": "Every line of the commit message is ≤ 72 characters long",
+      "max_score": 10
+    },
+    {
+      "name": "Correct conventional format",
+      "description": "Commit message matches the pattern `<type>(<scope>): <description>` on the first line",
+      "max_score": 8
+    },
+    {
+      "name": "No layer enumeration in scope",
+      "description": "The commit scope does NOT enumerate technical layers (e.g., NOT `api+frontend+db` or `api,db,ui`) — scope names a feature area, not a list of layers",
+      "max_score": 8
+    },
+    {
+      "name": "git log captured",
+      "description": "commit-log.txt exists and contains git log --oneline output",
+      "max_score": 6
+    },
+    {
+      "name": "Message is one line",
+      "description": "The commit message is a single-line subject (no body/footer needed for a single logical unit change)",
+      "max_score": 4
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "total_infeasible": 1,
+  "infeasible_scenarios": [
+    {
+      "scenario": "Ask user about ambiguous file",
+      "reasoning": "The instruction 'if a single file contains unrelated edits for multiple groups, ask the user before proceeding' requires interactive back-and-forth with a user. The eval harness is non-interactive, so there is no user to ask. The agent would either silently pick a group or halt, neither of which can be graded against the instruction in a meaningful way."
+    }
+  ]
+}

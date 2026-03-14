@@ -1,0 +1,66 @@
+{
+  "context": "Tests whether the agent correctly groups unrelated changes into separate commits, writes a plan before staging, uses conventional commit format with appropriate scopes and action verbs, and produces multiple commits rather than one large mixed commit.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Plan before staging",
+      "description": "commit-plan.md exists and contains proposed commit groups with messages listed before any commits were made (the plan mentions files and messages, indicating pre-staging analysis)",
+      "max_score": 10
+    },
+    {
+      "name": "Auth group identified",
+      "description": "commit-plan.md or commit-log.txt shows auth-related files (middleware.js, utils.js, auth.test.js) grouped into a single commit",
+      "max_score": 8
+    },
+    {
+      "name": "Payments group identified",
+      "description": "commit-plan.md or commit-log.txt shows payments-related files (processor.js, webhook.js, payments.test.js) grouped into a single commit",
+      "max_score": 8
+    },
+    {
+      "name": "Infra/CI group identified",
+      "description": "The CI config file (.github/workflows/ci.yml) is grouped separately from the feature files",
+      "max_score": 8
+    },
+    {
+      "name": "Multiple commits made",
+      "description": "commit-log.txt shows at least 2 commits beyond the initial commit (feature changes are not lumped into a single commit)",
+      "max_score": 10
+    },
+    {
+      "name": "Conventional commit type: feat",
+      "description": "The auth and payments commits use the `feat` type prefix (e.g., `feat(auth):` or `feat(payments):`)",
+      "max_score": 8
+    },
+    {
+      "name": "Conventional commit type: chore",
+      "description": "The CI pipeline commit uses `chore` type prefix (e.g., `chore(infra):` or `chore(config):`)",
+      "max_score": 8
+    },
+    {
+      "name": "Scope is short and logical",
+      "description": "All commit message scopes are short names (1-2 words like `auth`, `payments`, `infra`, `config`) — not full file paths or long phrases",
+      "max_score": 8
+    },
+    {
+      "name": "Action verb in description",
+      "description": "Each commit message description starts with an action verb (add, fix, remove, update, refactor, extract, or similar)",
+      "max_score": 8
+    },
+    {
+      "name": "No file listing in messages",
+      "description": "No commit message enumerates individual file names (e.g., does NOT say 'middleware.js, utils.js, auth.test.js')",
+      "max_score": 8
+    },
+    {
+      "name": "Line length ≤ 72 chars",
+      "description": "All lines in all commit messages visible in commit-log.txt are ≤ 72 characters long",
+      "max_score": 8
+    },
+    {
+      "name": "git log shown at end",
+      "description": "commit-log.txt contains output of git log --oneline showing the commits made in this session",
+      "max_score": 8
+    }
+  ]
+}
