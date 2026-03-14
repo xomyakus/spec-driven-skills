@@ -1,10 +1,4 @@
 {
   "version": 1,
-  "skills": {
-    "sdx-commit": {
-      "source": "xomyakus/spec-native-skills",
-      "sourceType": "github",
-      "computedHash": "e55496313020a3ee36b325336691619806b620095940d50d236fe74c3cdefa54"
-    }
-  }
+  "skills": {}
 }
