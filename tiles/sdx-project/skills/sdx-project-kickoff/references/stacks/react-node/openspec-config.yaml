@@ -1,0 +1,41 @@
+schema: spec-driven
+
+context: |
+  Project: {{PROJECT_NAME}} — {{PROJECT_DESCRIPTION}}
+  {{CONCEPT_SUMMARY}}
+  
+  Tech stack:
+    - Frontend: React (Vite), TypeScript, vanilla CSS
+    - Backend: Node.js (Express), TypeScript
+    - Database: PGLite (in-process PostgreSQL) for dev/test, PostgreSQL for production
+    - Testing: Playwright (E2E), Vitest (unit/integration), Supertest (API)
+    - Monorepo: client/ and server/ directories, root package.json with unified npm run dev
+  
+  Architecture:
+    {{ARCHITECTURE_SUMMARY}}
+  
+  Conventions:
+    - Use conventional commits
+    - TypeScript for all source and test files (no plain JS)
+    - React: functional components with hooks
+    - API: RESTful JSON, routes prefixed with /api/
+    - PGLite for dev/test database, PostgreSQL syntax throughout
+    - All SQL migrations in server/src/db/migrations/
+  
+  See openspec/concept.md for full project details.
+
+rules:
+  global:
+    - Never skip tests. Always implement both unit and E2E tests for features.
+    - Use PGLite for all development and testing. PostgreSQL for production.
+  specs:
+    - Every spec MUST have corresponding E2E test scenarios (Playwright) that validate requirements
+    - E2E tests are the first implementation artifact — written before any backend or frontend code
+  tasks:
+    - Follow strict TDD order — tests MUST come before implementation
+    - "Task group ordering MUST follow: 1) E2E tests (Playwright, from specs), 2) Integration tests (supertest), 3) Backend unit tests, 4) Backend implementation, 5) Frontend unit tests, 6) Frontend implementation"
+    - Break tasks into chunks of max 2 hours
+    - Include specific test criteria for each task
+  proposal:
+    - Each change should deliver working end-to-end functionality
+    - Keep changes focused on a single incremental slice

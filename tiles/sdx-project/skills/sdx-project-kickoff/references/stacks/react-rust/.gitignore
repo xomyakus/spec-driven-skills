@@ -1,0 +1,21 @@
+# Rust
+target/
+
+# Data
+data/
+!data/.gitkeep
+!data/pglite/.gitkeep
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/

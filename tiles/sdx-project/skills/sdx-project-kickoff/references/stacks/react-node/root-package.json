@@ -1,0 +1,22 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "version": "0.1.0",
+  "private": true,
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,green \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run --prefix server dev",
+    "dev:client": "npm run --prefix client dev",
+    "build": "npm run --prefix client build",
+    "test": "npm run --prefix server test",
+    "test:client": "npm run --prefix client test",
+    "test:e2e": "npx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.0.0",
+    "concurrently": "^9.1.0",
+    "playwright": "^1.52.0",
+    "typescript": "^5.7.0"
+  }
+}

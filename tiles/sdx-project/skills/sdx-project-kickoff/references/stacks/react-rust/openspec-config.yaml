@@ -1,0 +1,42 @@
+schema: spec-driven
+
+context: |
+  Project: {{PROJECT_NAME}} — {{PROJECT_DESCRIPTION}}
+  {{CONCEPT_SUMMARY}}
+  
+  Tech stack:
+    Backend: Rust, Rocket (HTTP server), sqlx (Postgres), tokio (async runtime)
+    Frontend: React, Vite, TypeScript
+    Database: PostgreSQL via sqlx (embedded postgresql_embedded for dev/test, standard Postgres for production)
+    Embedding: React SPA built into Rust binary via rust-embed
+  
+  Architecture:
+    {{ARCHITECTURE_SUMMARY}}
+    - Single-process deployment (no Docker orchestration required for dev)
+    - Multi-crate Cargo workspace for modularity
+  
+  Conventions:
+    - Use conventional commits
+    - Rust: follow standard Rust naming (snake_case functions, PascalCase types)
+    - React: functional components with hooks, TypeScript strict mode
+    - API: RESTful JSON, routes prefixed with /api/
+    - PostgreSQL for all database operations
+    - SQL migrations managed via sqlx
+  
+  See openspec/concept.md for full project details.
+
+rules:
+  proposal:
+    - Keep proposals focused on a single incremental slice of functionality
+    - Reference the concept.md roadmap for context on where this change fits
+    - Each change should deliver working end-to-end functionality
+  tasks:
+    - Break tasks into chunks completable in one session
+    - Order tasks so the first few produce something runnable and testable
+    - Include at least one integration/verification task per change
+  design:
+    - Reference existing crate structure and interfaces from previous changes
+    - Focus on new decisions, don't repeat established patterns
+  specs:
+    - Each scenario should be testable
+    - Use SHALL/MUST for normative requirements
