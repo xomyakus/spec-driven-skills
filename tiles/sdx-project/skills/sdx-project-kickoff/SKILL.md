@@ -1,9 +1,8 @@
 ---
 name: sdx-project-kickoff
 description: |
-  Initialize a new spec-driven project from a concept document and optional architecture/datamodel docs. 
-  Sets up the repository structure, OpenSpec configuration, tech stack scaffolding, testing infrastructure, 
-  agent configs, and creates the initial set of OpenSpec changes based on the provided documents.
+  Initializes a new spec-driven project repository from a concept document and optional architecture/datamodel docs. Sets up repository structure, OpenSpec configuration (a spec-as-code workflow tool), tech stack scaffolding, testing infrastructure, agent configs, and creates the full set of OpenSpec change proposals based on the provided documents.
+  Use when: a user wants to start a new project, initialize a repository from design docs, bootstrap a codebase from a concept document, scaffold a project from scratch, create a repo from spec, or says things like "new project setup", "kick off a project", "set up a new repo from my design docs", or "create a project from my concept file".
 ---
 
 # SDX Project Kickoff
@@ -29,16 +28,21 @@ If the user hasn't specified these, ask for them before proceeding.
 
 ---
 
+## Validation Rule
+
+> **For all input validation steps:** if a required condition is not met (file missing, unreadable, invalid stack, etc.), stop immediately and report the specific error to the user. Do not attempt to continue with missing or invalid inputs.
+
+---
+
 ## Steps
 
 ### 1. Validate Inputs
 
 - Confirm the concept document exists and is readable.
-- If provided, confirm the datamodel document exists and is readable.
-- If provided, confirm the architecture document exists and is readable.
-- Confirm the tech stack is one of: `react-node`, `react-rust`.
-- Confirm the target directory doesn't already contain a git repo (warn if it does).
-- Read the stack's README at `references/stacks/<stack>/README.md` for structure reference.
+- If provided, confirm the datamodel and architecture documents exist and are readable.
+- Confirm the tech stack is one of: `react-node`, `react-rust`. If not, list valid options and ask the user to choose.
+- Confirm the target directory doesn't already contain a git repo. If it does, warn the user and ask for confirmation before proceeding.
+- Read the stack's README at `references/stacks/<stack>/README.md`. If this file is missing, report that the stack reference files are not found and stop.
 
 ### 2. Initialize Repository
 
@@ -47,6 +51,8 @@ mkdir -p <target-directory>
 cd <target-directory>
 git init
 ```
+
+If `git init` fails due to an existing repo, prompt the user for confirmation before proceeding.
 
 ### 3. Create Project Structure
 
@@ -66,6 +72,8 @@ For each template file in `references/stacks/<stack>/`:
 Also copy common files from `references/common/`:
 - `mcp.json` → `.mcp.json`
 - `AGENTS.md` → `AGENTS.md`
+
+If any template file is missing, report which file is absent and stop — do not proceed with incomplete templates.
 
 ### 5. Generate OpenSpec Config
 
@@ -97,11 +105,13 @@ This creates the OpenSpec directory structure and installs agent instructions fo
 
 If the user requests support for additional AI tools, use `--tools all` instead (covers Cursor, Gemini, Codex, Windsurf, and others).
 
+**Verify success:** Confirm the `openspec/` directory was created. If `openspec init` fails, report the error output to the user and stop — subsequent steps depend on this directory.
+
 ### 8. Copy Input Documents
 
 Copy the concept document to `openspec/concept.md`.
 
-If a datamodel document was provided, copy it to `DATAMODEL.md` in the project root (this is the canonical schema reference, accessible to both the agent and the developer).
+If a datamodel document was provided, copy it to `DATAMODEL.md` in the project root (canonical schema reference, accessible to both the agent and the developer).
 
 If an architecture document was provided, copy it to `ARCHITECTURE.md` in the project root.
 
@@ -128,6 +138,8 @@ Based on all provided documents (concept, datamodel, architecture) and the roadm
 openspec new change "<change-name>"
 ```
 
+If `openspec new change` fails for any change, report the error and the change name, then ask the user whether to retry, skip, or abort. Do not silently continue with a missing change directory.
+
 Then get the artifact instructions and create the proposal artifact:
 
 ```bash
@@ -142,7 +154,7 @@ Read the instructions JSON and create the `proposal.md` artifact for each change
 - The datamodel document (if provided) — for `data-model` and API-related changes, reference specific tables, columns, types, and relationships
 - The architecture document (if provided) — for component boundaries, API contracts, and integration patterns
 
-**The proposal.md for each change should include:**
+**The `proposal.md` for each change should follow this structure:**
 
 ```markdown
 ## Why
@@ -162,19 +174,11 @@ Read the instructions JSON and create the `proposal.md` artifact for each change
 <Tables, APIs, or infrastructure affected>
 ```
 
-**Typical change structure across phases:**
-
-Phase 1 (Foundation):
+**Standard starting changes (Phase 1):**
 1. **`foundation`** — project structure, package configs, dev tooling, health check endpoint
 2. **`data-model`** — database schema, models, migrations
 
-Phase 2+ (Features — derived from concept):
-3. **`<feature-name>`** — each major feature or vertical slice from the concept gets its own change
-4. Continue until all features from the concept/roadmap are covered
-
-**Every change in the roadmap MUST have a corresponding `openspec/changes/<name>/` directory with a `proposal.md`.** The roadmap is the plan — the changes are the execution containers. They must match 1:1.
-
-> **Important:** Only create the `proposal.md` artifact for each change. Do NOT create specs, design, or tasks — those will be created during implementation using `/opsx:new` or `/opsx:ff`.
+Phase 2 and beyond are derived entirely from the concept/architecture documents — each major feature or vertical slice becomes its own change. Every change in the roadmap MUST have a corresponding `openspec/changes/<name>/` directory with a `proposal.md`; the roadmap and changes must match 1:1.
 
 ### 11. Generate README
 
@@ -220,24 +224,11 @@ Print a summary of what was created:
 
 ---
 
-## Database Strategy
-
-All stacks use the same database strategy:
-- **PGLite** for development and testing — lightweight, in-process PostgreSQL with full PG syntax
-- **PostgreSQL** for production — standard Postgres server
-
-This means all SQL, migrations, and queries use PostgreSQL syntax and are portable between PGLite and production Postgres.
-
----
-
 ## Important Rules
 
 - **Read the stack README first** — `references/stacks/<stack>/README.md` has the complete structure and template file list.
-- **Use `openspec` CLI for changes** — always use `openspec new change` to create changes, never manually create the directory structure.
-- **Use `openspec init` for setup** — this handles all the agent instruction files across all supported AI tools.
 - **Don't install dependencies** during kickoff — only create config files. Tell the user to run install commands after.
 - **Input documents drive everything** — derive architecture, data model, and feature phases from the concept (and datamodel/architecture docs when provided). When a dedicated datamodel or architecture doc is provided, prefer its detail over the concept doc for those aspects.
 - **First change should be runnable** — after implementing the `foundation` change, the user should be able to start the dev server and see something.
-- **PGLite everywhere for dev/test** — never require a running PostgreSQL server for local development or testing.
-- **PostgreSQL syntax always** — PGLite supports full PG syntax, so all SQL should be production-grade PostgreSQL.
-- **Only create proposals** — for initial changes, only create the proposal artifact. Specs, design, and tasks are created later during implementation via the openspec workflow (`/opsx:new`, `/opsx:ff`, `/opsx:apply`).
+- **PGLite for dev/test; PostgreSQL for production** — never require a running PostgreSQL server for local development or testing. All SQL uses PostgreSQL syntax and is portable between the two.
+- **Only create proposals** — for initial changes, only create the `proposal.md` artifact. Specs, design, and tasks are created later during implementation via the openspec workflow (`/opsx:new`, `/opsx:ff`, `/opsx:apply`).
