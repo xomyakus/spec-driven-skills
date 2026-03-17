@@ -232,3 +232,9 @@ Print a summary of what was created:
 - **First change should be runnable** — after implementing the `foundation` change, the user should be able to start the dev server and see something.
 - **PGLite for dev/test; PostgreSQL for production** — never require a running PostgreSQL server for local development or testing. All SQL uses PostgreSQL syntax and is portable between the two.
 - **Only create proposals** — for initial changes, only create the `proposal.md` artifact. Specs, design, and tasks are created later during implementation via the openspec workflow (`/opsx:new`, `/opsx:ff`, `/opsx:apply`).
+
+## References
+
+- [Roadmap Template](references/common/roadmap-template.md)
+- [React+Node README](references/stacks/react-node/README.md)
+- [React+Rust README](references/stacks/react-rust/README.md)

@@ -1,6 +1,6 @@
 {
   "name": "spec-driven-magic/sdx-project",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "Initializing codebase and spec-driven configuration for new project based on existing concept file ",
   "skills": {
     "sdx-project-kickoff": {
