@@ -1,14 +1,14 @@
 ---
 name: sdx-project-kickoff
 description: |
-  Initialize a new spec-driven project from a concept document. Sets up the repository structure, 
-  OpenSpec configuration, tech stack scaffolding, testing infrastructure, agent configs, and creates 
-  the initial set of OpenSpec changes based on the concept.
+  Initialize a new spec-driven project from a concept document and optional architecture/datamodel docs. 
+  Sets up the repository structure, OpenSpec configuration, tech stack scaffolding, testing infrastructure, 
+  agent configs, and creates the initial set of OpenSpec changes based on the provided documents.
 ---
 
 # SDX Project Kickoff
 
-Initialize a fully configured, spec-driven project repository from a concept document and a chosen tech stack.
+Initialize a fully configured, spec-driven project repository from a concept document (and optional architecture/datamodel docs) and a chosen tech stack.
 
 ---
 
@@ -22,6 +22,8 @@ The user MUST provide:
 Optional:
 - **Project description** — one-line summary (defaults to first heading from concept).
 - **Target directory** — where to create the project (defaults to `~/dev/<project-name>`).
+- **Datamodel document** — a markdown file describing the database schema, tables, relationships, and data types. When provided, drives more precise `data-model` change proposals and informs the OpenSpec config.
+- **Architecture document** — a markdown file describing the system architecture, component boundaries, API contracts, and integration patterns. When provided, populates the `{{ARCHITECTURE_SUMMARY}}` in the OpenSpec config and informs the overall roadmap structure.
 
 If the user hasn't specified these, ask for them before proceeding.
 
@@ -32,6 +34,8 @@ If the user hasn't specified these, ask for them before proceeding.
 ### 1. Validate Inputs
 
 - Confirm the concept document exists and is readable.
+- If provided, confirm the datamodel document exists and is readable.
+- If provided, confirm the architecture document exists and is readable.
 - Confirm the tech stack is one of: `react-node`, `react-rust`.
 - Confirm the target directory doesn't already contain a git repo (warn if it does).
 - Read the stack's README at `references/stacks/<stack>/README.md` for structure reference.
@@ -71,7 +75,7 @@ Replace placeholders:
 - `{{PROJECT_NAME}}` — project name
 - `{{PROJECT_DESCRIPTION}}` — one-line description
 - `{{CONCEPT_SUMMARY}}` — 2-3 sentence summary derived from the concept document
-- `{{ARCHITECTURE_SUMMARY}}` — architecture description derived from the concept document
+- `{{ARCHITECTURE_SUMMARY}}` — if an architecture document was provided, use its content directly; otherwise derive from the concept document
 
 Write to `openspec/config.yaml`.
 
@@ -93,32 +97,38 @@ This creates the OpenSpec directory structure and installs agent instructions fo
 
 If the user requests support for additional AI tools, use `--tools all` instead (covers Cursor, Gemini, Codex, Windsurf, and others).
 
-### 8. Copy Concept Document
+### 8. Copy Input Documents
 
 Copy the concept document to `openspec/concept.md`.
 
+If a datamodel document was provided, copy it to `DATAMODEL.md` in the project root (this is the canonical schema reference, accessible to both the agent and the developer).
+
+If an architecture document was provided, copy it to `ARCHITECTURE.md` in the project root.
+
 ### 9. Generate Roadmap
 
-Analyze the concept document and create `openspec/roadmap.md` based on the template at `references/common/roadmap-template.md`.
+Analyze all provided documents (concept, datamodel, architecture) and create `openspec/roadmap.md` based on the template at `references/common/roadmap-template.md`.
 
-**Derive from the concept:**
+**Derive from the input documents:**
 - Phased implementation plan (3-5 phases)
 - Each phase has a milestone description
 - Changes listed in dependency order
 - First phase focuses on foundation (project structure, data model, basic API, minimal UI)
+- If a datamodel document was provided, the `data-model` change should reference specific tables and schemas from it
+- If an architecture document was provided, use its component boundaries to inform change scoping
 - Use checkbox format: `- [ ] \`change-name\` — description`
 
-### 10. Create Initial OpenSpec Changes
+### 10. Create OpenSpec Changes for ALL Roadmap Phases
 
-Based on the concept document and roadmap, create the **first phase** of OpenSpec changes using the `openspec` CLI.
+Based on all provided documents (concept, datamodel, architecture) and the roadmap, create OpenSpec changes for **every change listed in the roadmap** — across all phases, not just Phase 1.
 
-**For each change in Phase 1:**
+**For each change in the roadmap:**
 
 ```bash
 openspec new change "<change-name>"
 ```
 
-Then get the artifact instructions and create the first artifact (proposal):
+Then get the artifact instructions and create the proposal artifact:
 
 ```bash
 openspec status --change "<change-name>" --json
@@ -129,6 +139,8 @@ Read the instructions JSON and create the `proposal.md` artifact for each change
 - The `template` field from instructions (use as structure)
 - The `context` and `rules` fields (apply as constraints, do NOT copy into the file)
 - The concept document for content
+- The datamodel document (if provided) — for `data-model` and API-related changes, reference specific tables, columns, types, and relationships
+- The architecture document (if provided) — for component boundaries, API contracts, and integration patterns
 
 **The proposal.md for each change should include:**
 
@@ -150,12 +162,17 @@ Read the instructions JSON and create the `proposal.md` artifact for each change
 <Tables, APIs, or infrastructure affected>
 ```
 
-**The first phase should typically include changes like:**
+**Typical change structure across phases:**
+
+Phase 1 (Foundation):
 1. **`foundation`** — project structure, package configs, dev tooling, health check endpoint
 2. **`data-model`** — database schema, models, migrations
-3. **`core-api`** — basic REST endpoints for the primary domain entity
-4. **`ui-shell`** — minimal frontend with navigation skeleton
-5. **First vertical feature** — one end-to-end feature slice from the concept
+
+Phase 2+ (Features — derived from concept):
+3. **`<feature-name>`** — each major feature or vertical slice from the concept gets its own change
+4. Continue until all features from the concept/roadmap are covered
+
+**Every change in the roadmap MUST have a corresponding `openspec/changes/<name>/` directory with a `proposal.md`.** The roadmap is the plan — the changes are the execution containers. They must match 1:1.
 
 > **Important:** Only create the `proposal.md` artifact for each change. Do NOT create specs, design, or tasks — those will be created during implementation using `/opsx:new` or `/opsx:ff`.
 
@@ -195,7 +212,7 @@ Print a summary of what was created:
 - Target directory
 - Tech stack configured
 - OpenSpec initialized with agent tooling
-- Number of Phase 1 changes created (with names)
+- Total number of changes created across all phases (with names grouped by phase)
 - Next steps:
   1. `cd <target-directory>`
   2. Install dependencies (`npm install` / `cargo build`)
@@ -219,7 +236,7 @@ This means all SQL, migrations, and queries use PostgreSQL syntax and are portab
 - **Use `openspec` CLI for changes** — always use `openspec new change` to create changes, never manually create the directory structure.
 - **Use `openspec init` for setup** — this handles all the agent instruction files across all supported AI tools.
 - **Don't install dependencies** during kickoff — only create config files. Tell the user to run install commands after.
-- **Concept document is king** — derive everything (architecture, data model hints, feature phases) from the concept.
+- **Input documents drive everything** — derive architecture, data model, and feature phases from the concept (and datamodel/architecture docs when provided). When a dedicated datamodel or architecture doc is provided, prefer its detail over the concept doc for those aspects.
 - **First change should be runnable** — after implementing the `foundation` change, the user should be able to start the dev server and see something.
 - **PGLite everywhere for dev/test** — never require a running PostgreSQL server for local development or testing.
 - **PostgreSQL syntax always** — PGLite supports full PG syntax, so all SQL should be production-grade PostgreSQL.
