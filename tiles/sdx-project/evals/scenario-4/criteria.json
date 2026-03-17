@@ -1,0 +1,41 @@
+{
+  "context": "Tests that the alternative react-rust stack correctly configures the file structure and testing documentation required by that stack.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Cargo.toml Copy",
+      "description": "Cargo.toml exists in the project root",
+      "max_score": 15
+    },
+    {
+      "name": "Rocket Configuration",
+      "description": "Rocket.toml exists in the project root",
+      "max_score": 15
+    },
+    {
+      "name": "Crates Directory",
+      "description": "crates/.gitkeep exists, matching the react-rust structure",
+      "max_score": 10
+    },
+    {
+      "name": "Dev Script",
+      "description": "dev.sh exists in the project root",
+      "max_score": 10
+    },
+    {
+      "name": "Cargo Testing Instructions",
+      "description": "TESTING.md mentions 'cargo test' as part of the unit testing strategy",
+      "max_score": 15
+    },
+    {
+      "name": "OpenSpec Initialization",
+      "description": "openspec/ directory is still correctly initialized under the rust stack",
+      "max_score": 15
+    },
+    {
+      "name": "Foundation Change",
+      "description": "openspec/changes/foundation/proposal.md exists",
+      "max_score": 20
+    }
+  ]
+}

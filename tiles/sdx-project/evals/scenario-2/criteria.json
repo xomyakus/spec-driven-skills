@@ -1,0 +1,36 @@
+{
+  "context": "Tests that empty directories are preserved with .gitkeep and all required top-level documentation (CLAUDE.md, README.md, TESTING.md) is generated properly based on the stack.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Gitkeep File",
+      "description": "data/pglite/.gitkeep exists",
+      "max_score": 15
+    },
+    {
+      "name": "CLAUDE.md Copy",
+      "description": "CLAUDE.md exists in the project root",
+      "max_score": 15
+    },
+    {
+      "name": "README Output",
+      "description": "README.md exists and includes links to openspec/concept.md and openspec/roadmap.md",
+      "max_score": 15
+    },
+    {
+      "name": "README Instructions",
+      "description": "README.md contains 'getting started' instructions for running the dev server",
+      "max_score": 15
+    },
+    {
+      "name": "TESTING Stack Document",
+      "description": "TESTING.md exists and mentions 'Playwright' and 'PGLite' specifically as instructed for the stack",
+      "max_score": 20
+    },
+    {
+      "name": "Project Name Replaced",
+      "description": "package.json contains '\"name\": \"blog-engine\"', indicating placeholder substitution worked",
+      "max_score": 20
+    }
+  ]
+}

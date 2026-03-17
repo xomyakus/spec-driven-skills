@@ -1,0 +1,130 @@
+{
+  "instructions": [
+    {
+      "instruction": "If required inputs (concept document, tech stack, project name) are missing, ask for them before proceeding.",
+      "original_snippets": "If the user hasn't specified these, ask for them before proceeding.",
+      "relevant_when": "When the user provides an incomplete kickoff request",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Stop immediately and report the specific error if a required condition is not met (file missing, unreadable, invalid stack).",
+      "original_snippets": "if a required condition is not met (file missing, unreadable, invalid stack, etc.), stop immediately and report the specific error to the user. Do not attempt to continue",
+      "relevant_when": "When validating inputs and one is invalid or missing",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Confirm the target directory doesn't already contain a git repo, warn and ask for confirmation before proceeding if it does.",
+      "original_snippets": "Confirm the target directory doesn't already contain a git repo. If it does, warn the user and ask for confirmation before proceeding.",
+      "relevant_when": "When target directory is an existing git repo",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Read references/stacks/<stack>/README.md for exact directory tree and create all directories listed, using .gitkeep for empty ones.",
+      "original_snippets": "Read references/stacks/<stack>/README.md for the exact directory tree.\nCreate all directories listed in the structure. Create .gitkeep files in empty directories",
+      "relevant_when": "When scaffolding the project directory structure",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Copy and adapt template files from references/stacks/<stack>/, replacing {{PROJECT_NAME}} and {{PROJECT_DESCRIPTION}}.",
+      "original_snippets": "For each template file in references/stacks/<stack>/:\n1. Read the template file\n2. Replace all {{PLACEHOLDER}} values",
+      "relevant_when": "When populating stack template files",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Copy common files mcp.json to .mcp.json and AGENTS.md to AGENTS.md from references/common/.",
+      "original_snippets": "Also copy common files from references/common/:\n- `mcp.json` → `.mcp.json`\n- `AGENTS.md` → `AGENTS.md`",
+      "relevant_when": "When copying files into the new project",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Generate OpenSpec config from template, replacing placeholders including {{CONCEPT_SUMMARY}} and {{ARCHITECTURE_SUMMARY}}.",
+      "original_snippets": "Read the OpenSpec config template at references/stacks/<stack>/openspec-config.yaml.\nReplace placeholders... Write to openspec/config.yaml.",
+      "relevant_when": "When generating OpenSpec configuration",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Copy CLAUDE.md template from stack references to the project root.",
+      "original_snippets": "Read the CLAUDE.md template at references/stacks/<stack>/CLAUDE.md.\nCopy it to the project root as CLAUDE.md.",
+      "relevant_when": "When setting up agent instructions",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Run openspec init --tools claude,antigravity (or --tools all if requested) and confirm success.",
+      "original_snippets": "Run OpenSpec initialization to set up the project with agent tooling:\nopenspec init --tools claude,antigravity",
+      "relevant_when": "When initializing OpenSpec",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Copy the concept document to openspec/concept.md.",
+      "original_snippets": "Copy the concept document to openspec/concept.md.",
+      "relevant_when": "When organizing input documents in the repo",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Copy datamodel to DATAMODEL.md and architecture to ARCHITECTURE.md in root, if provided.",
+      "original_snippets": "If a datamodel document was provided, copy it to DATAMODEL.md in the project root... If an architecture document was provided, copy it to ARCHITECTURE.md in the project root.",
+      "relevant_when": "When input includes optional data model or architecture documents",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Generate openspec/roadmap.md based on template in references/common/roadmap-template.md with 3-5 phases.",
+      "original_snippets": "create openspec/roadmap.md based on the template at references/common/roadmap-template.md.\n- Phased implementation plan (3-5 phases)",
+      "relevant_when": "When creating the implementation roadmap",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Roadmap should use checkbox format: - [ ] `change-name` — description.",
+      "original_snippets": "Use checkbox format: - [ ] `change-name` — description",
+      "relevant_when": "When formatting the roadmap items",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Create OpenSpec changes for EVERY change listed in the roadmap using openspec new change.",
+      "original_snippets": "create OpenSpec changes for every change listed in the roadmap — across all phases, not just Phase 1.\nopenspec new change \"<change-name>\"",
+      "relevant_when": "When setting up changes directory",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Generate proposal.md for each change with specific structure: Why, What Changes, Capabilities, Impact.",
+      "original_snippets": "create the proposal.md artifact for each change... The proposal.md for each change should follow this structure:\n## Why... ## What Changes... ## Capabilities... ## Impact",
+      "relevant_when": "When creating the proposal for each openspec change",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Phase 1 changes should be foundation and data-model.",
+      "original_snippets": "Standard starting changes (Phase 1):\n1. foundation ... 2. data-model",
+      "relevant_when": "When establishing the initial roadmap phases",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Create README.md with project name, tech stack summary, getting started, project structure, and links to concept/roadmap.",
+      "original_snippets": "Create README.md with:\n- Project name and description...\n- Link to openspec/concept.md... Link to openspec/roadmap.md",
+      "relevant_when": "When generating the project README",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Create TESTING.md adapted to the stack including commands, conventions, E2E, DB strategy.",
+      "original_snippets": "Create TESTING.md adapted to the stack...",
+      "relevant_when": "When documenting testing strategies",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Create initial commit with message 'feat: initialize <project-name> with spec-driven configuration'.",
+      "original_snippets": "git commit -m \"feat: initialize <project-name> with spec-driven configuration\"",
+      "relevant_when": "When finalizing the kickoff via git",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Do not install dependencies during kickoff, just tell user to run install commands.",
+      "original_snippets": "Don't install dependencies during kickoff — only create config files. Tell the user to run install commands after.",
+      "relevant_when": "During overall execution of project setup",
+      "why_given": "preference"
+    },
+    {
+      "instruction": "Only create proposal artifacts for changes initially, not specs or tasks.",
+      "original_snippets": "Only create proposals — for initial changes, only create the proposal.md artifact. Specs, design, and tasks are created later",
+      "relevant_when": "When iterating over openspec changes and instructions",
+      "why_given": "preference"
+    }
+  ]
+}

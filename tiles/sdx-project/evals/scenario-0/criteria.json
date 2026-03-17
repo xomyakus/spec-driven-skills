@@ -1,0 +1,46 @@
+{
+  "context": "Tests basic project structure and files setup from a concept document.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "OpenSpec Config",
+      "description": "openspec/config.yaml exists and contains the project name and summary",
+      "max_score": 10
+    },
+    {
+      "name": "OpenSpec Init",
+      "description": "openspec/ directory exists, indicating openspec init was run",
+      "max_score": 10
+    },
+    {
+      "name": "Common Files",
+      "description": ".mcp.json and AGENTS.md are copied to the project root",
+      "max_score": 10
+    },
+    {
+      "name": "Roadmap Exists",
+      "description": "openspec/roadmap.md is generated",
+      "max_score": 10
+    },
+    {
+      "name": "Phase 1 Changes",
+      "description": "openspec/changes/foundation and openspec/changes/data-model directories exist",
+      "max_score": 15
+    },
+    {
+      "name": "Proposal Structure",
+      "description": "openspec/changes/foundation/proposal.md contains headers: ## Why, ## What Changes",
+      "max_score": 15
+    },
+    {
+      "name": "Concept Copied",
+      "description": "openspec/concept.md exists and contains the provided concept content",
+      "max_score": 15
+    },
+    {
+      "name": "Git Commit",
+      "description": "The git repository was initialized and committed (tested indirectly by the presence of a .git directory and the repository state)",
+      "max_score": 15
+    }
+  ]
+}

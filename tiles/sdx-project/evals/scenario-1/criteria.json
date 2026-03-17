@@ -1,0 +1,36 @@
+{
+  "context": "Tests handling of optional input documents: datamodel.md and architecture.md and whether they drive roadmap and configuration generation.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "DATAMODEL Copy",
+      "description": "DATAMODEL.md exists in the project root",
+      "max_score": 10
+    },
+    {
+      "name": "ARCHITECTURE Copy",
+      "description": "ARCHITECTURE.md exists in the project root",
+      "max_score": 10
+    },
+    {
+      "name": "Config Update",
+      "description": "openspec/config.yaml includes the architecture summary derived directly from the provided architecture document",
+      "max_score": 20
+    },
+    {
+      "name": "Roadmap Components",
+      "description": "openspec/roadmap.md phases reference the system boundaries, like the 'Core Engine', from the architecture doc",
+      "max_score": 20
+    },
+    {
+      "name": "Data Model Proposal",
+      "description": "openspec/changes/data-model/proposal.md references specific tables like 'Payments' from the datamodel document",
+      "max_score": 20
+    },
+    {
+      "name": "Feature Change",
+      "description": "openspec/changes/ directory contains additional folders mapped to the phases from the roadmap",
+      "max_score": 20
+    }
+  ]
+}

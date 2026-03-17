@@ -1,0 +1,17 @@
+{
+  "total_infeasible": 3,
+  "infeasible_scenarios": [
+    {
+      "scenarios": "Missing Input Prompting",
+      "reasoning": "Instruction directs the agent to ask the user for missing info. Eval environments are non-interactive; if prompted, the system will timeout or fail. Therefore, interactive prompts cannot be reliably tested."
+    },
+    {
+      "scenarios": "Error Reporting",
+      "reasoning": "Instruction directs the agent to stop immediately and report an error if conditions are not met. The eval cannot easily grade unstructured text error outputs, and the agent halting execution without creating files doesn't provide enough evidence for an automated rubric."
+    },
+    {
+      "scenarios": "Existing Git Repo Warning",
+      "reasoning": "Instruction directs the agent to warn the user and ask for confirmation before proceeding if the target dir has a git repo. Interactive confirmations cannot be evaluated in a non-interactive file-scoring sandbox."
+    }
+  ]
+}

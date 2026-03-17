@@ -1,0 +1,41 @@
+{
+  "context": "Tests that a proper roadmap leads to multiple openspec proposals correctly mapped to feature changes from the concept, without generating unrequested artifact types like specs or tasks.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Multi-Phase Roadmap",
+      "description": "openspec/roadmap.md contains at least 3 distinct phases",
+      "max_score": 15
+    },
+    {
+      "name": "Checkbox Formatting",
+      "description": "Roadmap items use checkbox format `- [ ] <change-name> — <description>`",
+      "max_score": 10
+    },
+    {
+      "name": "Phase 1 Elements",
+      "description": "Roadmap contains 'foundation' and 'data-model' explicitly as the first changes",
+      "max_score": 15
+    },
+    {
+      "name": "Role Feature Mapping",
+      "description": "openspec/changes/ directory contains a subfolder for a role-related feature mapped from the concept doc (e.g. 'roles', 'user-roles', 'auth')",
+      "max_score": 15
+    },
+    {
+      "name": "Analytics Feature Mapping",
+      "description": "openspec/changes/ directory contains a subfolder for an analytics-related feature mapped from the concept doc",
+      "max_score": 15
+    },
+    {
+      "name": "Proposal Match",
+      "description": "Every subfolder under openspec/changes/ contains exactly one file named 'proposal.md'",
+      "max_score": 15
+    },
+    {
+      "name": "No Specs or Tasks",
+      "description": "There are no 'spec.md' or 'task.md' or purely design files alongside the proposal.md files in the openspec/changes/ subdirectories",
+      "max_score": 15
+    }
+  ]
+}
