@@ -4,7 +4,7 @@ description: Analyzes git changes, groups them by logical change or OpenSpec fea
 license: MIT
 metadata:
   author: md@rcbd.org
-  version: "1.0"
+  version: "1.1"
 ---
 
 Analyze the current git diff, group files into logical changes, then produce concise conventional-commit messages and commit each group separately.
@@ -77,9 +77,16 @@ Analyze the current git diff, group files into logical changes, then produce con
    git commit -m "<message>"
    ```
 
-   For multi-line messages, use multiple `-m` flags.
+   For multi-line commit bodies (e.g. adding detail below the subject line), use multiple `-m` flags — each `-m` value becomes a separate paragraph.
 
-   d. Continue to the next group (index should be clean after commit)
+   d. **Handle hook failures**: If the commit is rejected by a pre-commit hook:
+      - Read the hook's output carefully to understand what failed (lint, format, test, etc.)
+      - Fix the reported issue in the affected files
+      - Re-stage the fixed files (`git add -- <files>`)
+      - Retry the commit
+      - If the hook cannot be satisfied without scope creep (e.g. requires changes outside this group), ask the user whether to expand the group or skip this commit
+
+   e. Continue to the next group (index should be clean after commit)
 
 6. **Confirm all commits**
 
@@ -91,36 +98,44 @@ Analyze the current git diff, group files into logical changes, then produce con
 
    Confirm each planned group was committed.
 
+   **Rollback:** If a commit was made in error (wrong files, wrong message), stop immediately and inform the user. Suggest `git reset HEAD~1` to undo the last commit (keeps changes staged) before proceeding.
+
 ---
 
 ## Commit Message Format
 
-Use this format for each group commit:
+Use this format for **each group commit** (one commit per group):
 
 ```
-feat(<scope>): concise description of what changed
+type(<scope>): concise description of what changed
 ```
 
 **Rules:**
 - **scope** = the logical area affected. Use short names like: `connector`, `db`, `api`, `engine`, `frontend`, `docs`, `config`, `infra`.
 - If a change maps to a known feature (check `openspec/changes/*/`), use that feature name as the scope. For example: `feat(mvp-full-sync): add Klaviyo connector`.
-- Each line should be ≤ 72 characters.
+- Each subject line should be ≤ 72 characters.
 - Use `feat` for new features, `fix` for bug fixes, `refactor` for restructuring, `docs` for documentation, `chore` for config/build changes.
-- If all changes are part of one logical unit, a single line is fine.
+- Each commit must have **exactly one** `type(scope): description` subject line. Multiple types/scopes mean multiple commits.
 
 **Examples:**
 
-Single-line:
+Single commit for one logical area:
 ```
 feat(connector): add Klaviyo connector with cursor pagination
 ```
 
-Multi-line (when spanning multiple areas):
+When changes span multiple logical areas, use **separate commits** — one per area:
 ```
+# Commit 1
 feat(connector): add Klaviyo connector with cursor pagination
 
+# Commit 2
 feat(api): expose embedded PG URL via /api/config endpoint
+
+# Commit 3
 fix(db): clean up stale postmaster.pid on startup
+
+# Commit 4
 chore(docs): add project README
 ```
 
@@ -131,7 +146,21 @@ chore(docs): add project README
 - Be **concise**. Each line should tell the reader _what_ changed, not _how_.
 - Prefer **action verbs**: add, fix, remove, update, refactor, extract.
 - Don't list every file in commit messages — summarize by intent.
-- If there are 10+ files changed across 3+ areas, still aim for ≤ 5 commit message lines.
-- When in doubt, fewer lines is better.
+- When in doubt, fewer commits with clear messages is better than many micro-commits.
 - Prefer multiple small commits over one mixed commit when changes map to different features.
 - Group by **change first**, then by layer (api/frontend/docs) within that change.
+
+---
+
+## Structured Output
+
+After all commits are done, print a summary block so callers and CI tooling can parse results:
+
+```
+## sdx-commit summary
+groups: <N>
+commits: <N>
+sha: <last-commit-sha>
+status: success | partial | failed
+notes: <any warnings or skipped groups>
+```
