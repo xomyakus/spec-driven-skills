@@ -1,0 +1,22 @@
+name: Tessl Evals
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tesslio/setup-tessl@v2
+        with:
+          token: ${{ secrets.TESSL_TOKEN }}
+      - name: Run evals
+        run: tessl eval run . --json
+      - name: Skill review
+        uses: tesslio/skill-review@v1
+        if: github.event_name == 'pull_request'
+        with:
+          token: ${{ secrets.TESSL_TOKEN }}
